@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Never commit credentials. The key belongs in $TAMU_AI_API_KEY or
+# ~/.config/tamu-ai/api-key -- never inside this repo.
+api-key
+*.key
+.env
