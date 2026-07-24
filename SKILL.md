@@ -57,11 +57,15 @@ python3 ~/.claude/skills/tamu-ai/scripts/tamu_ai.py --chat "hello" -m protected.
 ```
 
 ```python
-import sys; sys.path.insert(0, "/Users/adessler/.claude/skills/tamu-ai/scripts")
+import os, sys
+sys.path.insert(0, os.path.expanduser("~/.claude/skills/tamu-ai/scripts"))
 from tamu_ai import chat, list_models, run_batch, extract_json, FAST_MODEL
 
 chat("summarize this in one line", model=FAST_MODEL)
 ```
+
+(`sys.path` does not expand `~` on its own — `expanduser` is required. If the
+skill lives elsewhere, point that path at wherever `tamu_ai.py` actually is.)
 
 ## 3. Pick a model deliberately
 
@@ -144,9 +148,12 @@ Two properties that matter on long runs:
 
 ~2.7–3.4 requests/sec at 8–10 workers, with no rate limiting observed. Start at 8.
 
-**Worked example:** `~/Desktop/grading software/grade_short_answers.py` grades 457
-short answers (rubric per question, parallel, cached, zero failures) and
-`plot_human_vs_llm.py` validates the output against a human grader.
+**Shape of a real job this was built from:** grading 457 short answers from a
+Canvas quiz export — one call per answer carrying that question's rubric, run at
+8–10 workers, cached to disk, completed in 175 s with zero failures. The pattern
+generalizes: one small single-purpose call per row beats one giant call over the
+whole file, both for accuracy and because a failure then costs one row instead of
+the batch.
 
 ## Reference
 

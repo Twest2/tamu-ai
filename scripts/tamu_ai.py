@@ -6,9 +6,10 @@ OpenAI-compatible on the surface, but with enough gateway-specific behavior that
 a plain OpenAI snippet will fail in confusing ways. This module encodes what was
 established by probing the live API -- see ../references/quirks.md.
 
-Use as a module:
+Use as a module (sys.path does not expand "~", hence expanduser):
 
-    import sys; sys.path.insert(0, "~/.claude/skills/tamu-ai/scripts")
+    import os, sys
+    sys.path.insert(0, os.path.expanduser("~/.claude/skills/tamu-ai/scripts"))
     from tamu_ai import chat, list_models, run_batch, extract_json
 
     print(chat([{"role": "user", "content": "hi"}], model="protected.gpt-5.4-mini"))
